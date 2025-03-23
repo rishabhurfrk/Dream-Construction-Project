@@ -1,0 +1,44 @@
+/* Styling for the Get Plan form and buttons */
+.bg-white {
+    background-color: white;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  /* Button hover transition */
+  button:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  #newPlanForm {
+    animation: slideDown 0.3s ease-in-out;
+  }
+  
+  @keyframes slideDown {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  /* Card hover effect */
+.card:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .shadow-lg {
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  

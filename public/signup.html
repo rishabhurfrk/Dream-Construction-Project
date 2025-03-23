@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up - DREAM Construction</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="js/main.js"></script>
+    <style>
+      body {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                    url('images/contact-bg.jpg') no-repeat center center/cover;
+        min-height: 100vh;
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+        padding-top: 60px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .auth-section {
+        padding-top: 100px;
+        padding-bottom: 50px;
+        min-height: calc(100vh - 150px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .auth-container {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 500px;
+        margin: 20px;
+      }
+
+      .role-selector {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .role-btn {
+        padding: 0.8rem 1.5rem;
+        border: 2px solid #1f2937;
+        border-radius: 5px;
+        background: transparent;
+        color: #1f2937;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .role-btn.active {
+        background: #1f2937;
+        color: white;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #1f2937;
+        font-weight: 600;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+        box-sizing: border-box;
+      }
+
+      .file-input {
+        border: 1px dashed #ddd;
+        padding: 1rem;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+        margin-bottom: 1rem;
+      }
+
+      .file-input:hover {
+        border-color: #10b981;
+        background: #f3f4f6;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 1rem;
+        background: #10b981;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        margin-top: 1rem;
+      }
+
+      .submit-btn:hover {
+        background: #059669;
+      }
+
+      .auth-links {
+        text-align: center;
+        margin-top: 1rem;
+        color: #1f2937;
+      }
+
+      .auth-links a {
+        color: #10b981;
+        text-decoration: none;
+      }
+
+      .auth-links a:hover {
+        text-decoration: underline;
+      }
+
+      .architect-fields {
+        display: none;
+      }
+
+      .architect-fields.active {
+        display: block;
+      }
+
+      .required {
+        color: #dc2626;
+        font-size: 0.8rem;
+        margin-left: 0.25rem;
+      }
+
+      /* Spinner styles */
+      .spinner {
+        display: none;
+        margin: 1rem auto;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #10b981;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      .popup-message {
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 500;
+        z-index: 9999;
+        display: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        min-width: 300px;
+        max-width: 400px;
+        animation: slideIn 0.5s ease-out;
+      }
+
+      .popup-message.success {
+        background: #10b981;
+      }
+
+      .popup-message.error {
+        background: #ef4444;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      .footer {
+        margin-top: auto;
+      }
+
+      /* Navbar Styles */
+      .navbar {
+        background: #1f2937;
+        padding: 1rem 0;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .navbar .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 30px;
+      }
+
+      .logo {
+        flex: 0 0 auto;
+      }
+
+      .logo img {
+        height: 50px;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+        margin-left: auto;
+        gap: 20px;
+      }
+
+      .nav-button {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+      }
+
+      .nav-button:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #10b981;
+        transform: translateY(-2px);
+      }
+
+      .admin-button-container {
+        margin-left: 20px;
+      }
+
+      .admin-link {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 16px;
+        background: #10b981;
+        color: white !important;
+        border-radius: 5px;
+        transition: all 0.3s ease !important;
+        font-weight: 500;
+      }
+
+      .admin-link:hover {
+        background: #059669;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+      }
+
+      /* Footer Styles */
+      .footer {
+        background: #1f2937;
+        color: white;
+        padding: 50px 0 20px;
+        margin-top: auto;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .footer-section h3 {
+        color: #10b981;
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+      }
+
+      .footer-section p {
+        margin: 10px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .footer-section ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-section ul li {
+        margin: 10px 0;
+      }
+
+      .footer-section ul li a {
+        color: white;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer-section ul li a:hover {
+        color: #10b981;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 15px;
+      }
+
+      .social-links a {
+        color: white;
+        font-size: 1.5rem;
+        transition: color 0.3s ease;
+      }
+
+      .social-links a:hover {
+        color: #10b981;
+      }
+
+      .footer-bottom {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      /* Responsive styles */
+      @media (max-width: 768px) {
+        .navbar .container {
+          padding: 0 15px;
+        }
+
+        .nav-links {
+          gap: 10px;
+        }
+
+        .nav-button {
+          padding: 6px 12px;
+        }
+
+        .admin-button-container {
+          margin-left: 10px;
+        }
+
+        .footer-content {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+
+        .footer-section p {
+          justify-content: center;
+        }
+
+        .social-links {
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="popupMessage" class="popup-message"></div>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <img src="images/logo.png" alt="DREAM Construction">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-button">Home</a></li>
+                <li><a href="index.html#about" class="nav-button">About</a></li>
+                <li><a href="index.html#services" class="nav-button">Services</a></li>
+                <li><a href="index.html#projects" class="nav-button">Projects</a></li>
+                <li><a href="index.html#contact" class="nav-button">Contact</a></li>
+                <li class="admin-button-container">
+                    <a href="admin/admin-login.html" class="admin-link">
+                        <i class="fas fa-user-shield"></i> Admin
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Signup Section -->
+    <section class="auth-section">
+      <div class="auth-container">
+        <h2 style="text-align: center; color: #1f2937; margin-bottom: 1.5rem;">Sign Up</h2>
+        
+        <div class="role-selector">
+          <button type="button" class="role-btn active" onclick="switchRole('customer')">Customer</button>
+          <button type="button" class="role-btn" onclick="switchRole('architect')">Architect</button>
+        </div>
+
+        <!-- Updated form tag with POST method and enctype for file uploads -->
+        <form id="signupForm" method="POST">
+          <!-- Common Fields -->
+          <div class="form-group">
+            <label for="name">Full Name <span class="required">*</span></label>
+            <input type="text" id="name" name="name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email <span class="required">*</span></label>
+            <input type="email" id="email" name="email" required />
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number <span class="required">*</span></label>
+            <input type="tel" id="phone" name="phone" required />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password <span class="required">*</span></label>
+            <input type="password" id="password" name="password" required />
+          </div>
+
+          <!-- Hidden input for role -->
+          <input type="hidden" id="role" name="role" value="customer" />
+
+          <!-- Architect-specific Fields -->
+          <div id="architectFields" class="architect-fields">
+            <div class="form-group">
+              <label for="experience">Years of Experience <span class="required">*</span></label>
+              <input type="number" id="experience" name="experience" min="0" />
+            </div>
+
+            <div class="form-group">
+              <label for="license">License Number <span class="required">*</span></label>
+              <input type="text" id="license" name="license" />
+            </div>
+
+            <div class="form-group">
+              <label for="certificate">Certificate <span class="required">*</span></label>
+              <div class="file-input">
+                <input type="file" id="certificate" name="certificate" accept=".pdf,.jpg,.jpeg,.png" />
+                <p>Drop your certificate here or click to upload</p>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="portfolio">Portfolio (Optional)</label>
+              <div class="file-input">
+                <input type="file" id="portfolio" name="portfolio" accept=".pdf" />
+                <p>Drop your portfolio here or click to upload</p>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">Create Account</button>
+        </form>
+
+        <!-- Spinner for loading -->
+        <div class="spinner"></div>
+
+        <!-- Success message container -->
+        <div class="success-message" style="display:none;"></div>
+
+        <div class="auth-links">
+          <p>Already have an account? <a href="login.html">Login</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-phone"></i> +1234567890</p>
+                    <p><i class="fas fa-envelope"></i> info@dreamconstruction.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Construction Street, City, Country</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="index.html#services">Services</a></li>
+                        <li><a href="index.html#projects">Projects</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 DREAM Construction. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/signup.js"></script>
+  </body>
+</html>

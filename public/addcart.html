@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - DREAM Construction</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            padding-top: 80px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('images/contact-bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .cart-container {
+            flex: 1;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .cart-item {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .item-details {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .item-title {
+            font-size: 1.2rem;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .item-date {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .remove-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: white;
+            padding: 40px;
+        }
+
+        .checkout-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+
+        .checkout-btn:hover {
+            background: #059669;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Include the same navbar as existing.html -->
+    <nav class="navbar">
+        <!-- ... navbar code ... -->
+    </nav>
+
+    <div class="cart-container">
+        <div id="cartItems"></div>
+        <div class="text-center">
+            <button onclick="checkout()" class="checkout-btn" id="checkoutBtn" style="display: none;">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Include the same footer as existing.html -->
+    <footer class="footer">
+        <!-- ... footer code ... -->
+    </footer>
+
+    <script>
+        function loadCartItems() {
+            const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+            const cartContainer = document.getElementById('cartItems');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+
+            if (cartItems.length === 0) {
+                cartContainer.innerHTML = `
+                    <div class="empty-cart">
+                        <h2>Your cart is empty</h2>
+                        <p>Go back to <a href="existing.html" style="color: #10b981;">plans</a> to add items</p>
+                    </div>
+                `;
+                checkoutBtn.style.display = 'none';
+            } else {
+                cartContainer.innerHTML = cartItems.map((item, index) => `
+                    <div class="cart-item">
+                        <img src="images/plan-placeholder.jpg" alt="${item.title}">
+                        <div class="item-details">
+                            <h3 class="item-title">${item.title}</h3>
+                            <p class="item-date">Added on ${new Date(item.date).toLocaleDateString()}</p>
+                        </div>
+                        <button onclick="removeItem(${index})" class="remove-btn">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
+                    </div>
+                `).join('');
+                checkoutBtn.style.display = 'inline-block';
+            }
+        }
+
+        function removeItem(index) {
+            let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+            cartItems.splice(index, 1);
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            loadCartItems();
+            updateCartCount();
+        }
+
+        function checkout() {
+            alert('Proceeding to checkout...');
+            // Add your checkout logic here
+        }
+
+        function updateCartCount() {
+            const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+            const cartCount = document.getElementById('cartCount');
+            cartCount.textContent = cartItems.length;
+        }
+
+        // Load cart items when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCartItems();
+            updateCartCount();
+        });
+    </script>
+</body>
+</html> 

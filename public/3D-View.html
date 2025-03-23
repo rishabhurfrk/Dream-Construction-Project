@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Viewer</title>
+    <style>
+        body { margin: 0; }
+        .sketchfab-embed-wrapper {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200px; /* Adjust width as needed */
+            height: 50px; /* Adjust height as needed */
+            background-color: white;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sketchfab-embed-wrapper">
+        <div class="overlay"></div>
+        <iframe title="1 floor house plan 2016" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" src="https://sketchfab.com/models/5db0b16760b84bb9bc4d1ec210fac894/embed?ui_infos=0"></iframe>
+    </div>
+
+</body>
+</html>

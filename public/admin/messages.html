@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Admin Dashboard</title>
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar (same as dashboard) -->
+    <div class="sidebar">
+        <!-- Same sidebar content -->
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <h2>Messages</h2>
+            <div class="message-actions">
+                <button class="btn btn-secondary" onclick="markAllAsRead()">
+                    <i class="fas fa-check-double"></i> Mark All as Read
+                </button>
+                <button class="btn btn-danger" onclick="deleteSelected()">
+                    <i class="fas fa-trash"></i> Delete Selected
+                </button>
+            </div>
+        </div>
+
+        <!-- Message Stats -->
+        <div class="dashboard-cards">
+            <div class="card">
+                <h3>Total Messages</h3>
+                <div class="card-value" id="totalMessages">0</div>
+            </div>
+            <div class="card">
+                <h3>Unread Messages</h3>
+                <div class="card-value" id="unreadMessages">0</div>
+            </div>
+            <div class="card">
+                <h3>Today's Messages</h3>
+                <div class="card-value" id="todayMessages">0</div>
+            </div>
+        </div>
+
+        <!-- Messages List -->
+        <div class="messages-container">
+            <div class="messages-filters">
+                <input type="text" placeholder="Search messages..." onkeyup="filterMessages()">
+                <select onchange="filterMessageType()">
+                    <option value="all">All Messages</option>
+                    <option value="unread">Unread</option>
+                    <option value="read">Read</option>
+                </select>
+            </div>
+
+            <div class="messages-list" id="messagesList">
+                <!-- Messages will be populated here -->
+            </div>
+        </div>
+
+        <!-- Message View Modal -->
+        <div id="messageModal" class="modal">
+            <div class="modal-content">
+                <div class="message-header">
+                    <h3 id="messageSubject"></h3>
+                    <span id="messageSender"></span>
+                    <span id="messageDate"></span>
+                </div>
+                <div class="message-body" id="messageBody">
+                    <!-- Message content will be displayed here -->
+                </div>
+                <div class="message-actions">
+                    <button class="btn btn-primary" onclick="replyToMessage()">
+                        <i class="fas fa-reply"></i> Reply
+                    </button>
+                    <button class="btn btn-secondary" onclick="closeMessageModal()">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/messages.js"></script>
+</body>
+</html>

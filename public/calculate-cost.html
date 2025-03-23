@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculate Construction Cost - DREAM Construction</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            padding-top: 80px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('images/contact-bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .calculator-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            color: #1f2937;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4b5563;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .file-upload {
+            border: 2px dashed #d1d5db;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            border-color: #10b981;
+        }
+
+        .file-upload i {
+            font-size: 2rem;
+            color: #10b981;
+            margin-bottom: 10px;
+        }
+
+        .calculate-btn {
+            background: #10b981;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .calculate-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .result-container {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f3f4f6;
+            border-radius: 5px;
+        }
+
+        .result-title {
+            color: #1f2937;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .cost-breakdown {
+            margin-top: 15px;
+        }
+
+        .cost-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #d1d5db;
+        }
+
+        .total-cost {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #10b981;
+            margin-top: 15px;
+            text-align: right;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .calculator-container {
+                margin: 20px;
+                padding: 20px;
+            }
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: #1f2937;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-button {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            color: #10b981;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .cart-container {
+            position: relative;
+            margin-left: 20px;
+        }
+
+        .cart-link {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #10b981;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .admin-button-container {
+            margin-left: 20px;
+        }
+
+        .admin-link {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 16px;
+            background: #10b981;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .admin-link:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-section h3 {
+            color: #10b981;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-section p {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin: 10px 0;
+        }
+
+        .footer-section ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #10b981;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #10b981;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .navbar .container {
+                padding: 0 15px;
+            }
+
+            .nav-links {
+                gap: 10px;
+            }
+
+            .nav-button {
+                padding: 6px 12px;
+            }
+
+            .admin-button-container {
+                margin-left: 10px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-section p {
+                justify-content: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Include your navbar here -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <img src="images/logo.png" alt="DREAM Construction">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-button">Home</a></li>
+                <li><a href="index.html#about" class="nav-button">About</a></li>
+                <li><a href="index.html#services" class="nav-button">Services</a></li>
+                <li><a href="index.html#projects" class="nav-button">Projects</a></li>
+                <li><a href="index.html#contact" class="nav-button">Contact</a></li>
+                <li class="cart-container">
+                    <a href="addcart.html" class="cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </a>
+                </li>
+                <li class="admin-button-container">
+                    <a href="admin/admin-login.html" class="admin-link">
+                        <i class="fas fa-user-shield"></i> Admin
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="calculator-container">
+        <h2 class="form-title">Construction Cost Calculator</h2>
+        <form id="costCalculatorForm" onsubmit="calculateCost(event)">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="plotArea">Plot Area (sq ft)</label>
+                    <input type="number" id="plotArea" required>
+                </div>
+                <div class="form-group">
+                    <label for="floors">Number of Floors</label>
+                    <input type="number" id="floors" min="1" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="constructionType">Construction Type</label>
+                    <select id="constructionType" required>
+                        <option value="">Select Type</option>
+                        <option value="basic">Basic (₹1,500/sq ft)</option>
+                        <option value="standard">Standard (₹2,000/sq ft)</option>
+                        <option value="premium">Premium (₹2,500/sq ft)</option>
+                        <option value="luxury">Luxury (₹3,000/sq ft)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <select id="location" required>
+                        <option value="">Select Location</option>
+                        <option value="urban">Urban</option>
+                        <option value="suburban">Suburban</option>
+                        <option value="rural">Rural</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="planUpload">Upload Floor Plan (optional)</label>
+                <div class="file-upload" onclick="document.getElementById('planUpload').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Click to upload or drag and drop</p>
+                    <input type="file" id="planUpload" hidden accept=".pdf,.jpg,.png">
+                </div>
+            </div>
+
+            <button type="submit" class="calculate-btn">Calculate Cost</button>
+        </form>
+
+        <div id="resultContainer" class="result-container">
+            <h3 class="result-title">Estimated Cost Breakdown</h3>
+            <div class="cost-breakdown">
+                <div class="cost-item">
+                    <span>Basic Construction Cost</span>
+                    <span id="basicCost">₹0</span>
+                </div>
+                <div class="cost-item">
+                    <span>Material Cost</span>
+                    <span id="materialCost">₹0</span>
+                </div>
+                <div class="cost-item">
+                    <span>Labor Cost</span>
+                    <span id="laborCost">₹0</span>
+                </div>
+                <div class="cost-item">
+                    <span>Additional Charges</span>
+                    <span id="additionalCost">₹0</span>
+                </div>
+            </div>
+            <div class="total-cost">
+                Total Estimated Cost: <span id="totalCost">₹0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include your footer here -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-phone"></i> +1234567890</p>
+                    <p><i class="fas fa-envelope"></i> info@dreamconstruction.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Construction Street, City, Country</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="index.html#services">Services</a></li>
+                        <li><a href="index.html#projects">Projects</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 DREAM Construction. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function calculateCost(event) {
+            event.preventDefault();
+
+            const plotArea = Number(document.getElementById('plotArea').value);
+            const floors = Number(document.getElementById('floors').value);
+            const constructionType = document.getElementById('constructionType').value;
+            const location = document.getElementById('location').value;
+
+            // Basic rates per square foot
+            const rates = {
+                basic: 1500,
+                standard: 2000,
+                premium: 2500,
+                luxury: 3000
+            };
+
+            // Location multipliers
+            const locationMultiplier = {
+                urban: 1.2,
+                suburban: 1.0,
+                rural: 0.8
+            };
+
+            // Calculate costs
+            const baseRate = rates[constructionType];
+            const totalArea = plotArea * floors;
+            const locationFactor = locationMultiplier[location];
+
+            const basicCost = totalArea * baseRate * locationFactor;
+            const materialCost = basicCost * 0.6;
+            const laborCost = basicCost * 0.3;
+            const additionalCost = basicCost * 0.1;
+            const totalCost = basicCost + materialCost + laborCost + additionalCost;
+
+            // Display results
+            document.getElementById('basicCost').textContent = `₹${basicCost.toLocaleString()}`;
+            document.getElementById('materialCost').textContent = `₹${materialCost.toLocaleString()}`;
+            document.getElementById('laborCost').textContent = `₹${laborCost.toLocaleString()}`;
+            document.getElementById('additionalCost').textContent = `₹${additionalCost.toLocaleString()}`;
+            document.getElementById('totalCost').textContent = `₹${totalCost.toLocaleString()}`;
+
+            document.getElementById('resultContainer').style.display = 'block';
+        }
+
+        // File upload preview
+        document.getElementById('planUpload').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name;
+            if (fileName) {
+                const fileUpload = document.querySelector('.file-upload p');
+                fileUpload.textContent = `Selected file: ${fileName}`;
+            }
+        });
+
+        // Initialize cart count from localStorage
+        function updateCartCount() {
+            const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+            const cartCount = document.getElementById('cartCount');
+            cartCount.textContent = cartItems.length;
+        }
+
+        // Update cart count when page loads
+        document.addEventListener('DOMContentLoaded', updateCartCount);
+    </script>
+</body>
+</html> 

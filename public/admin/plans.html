@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plans Management - Admin Dashboard</title>
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar (same as dashboard) -->
+    <div class="sidebar">
+        <!-- Same sidebar content -->
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <h2>Plans Management</h2>
+            <button class="btn btn-primary" onclick="openAddPlanModal()">
+                <i class="fas fa-plus"></i> Add New Plan
+            </button>
+        </div>
+
+        <!-- Plans Stats -->
+        <div class="dashboard-cards">
+            <div class="card">
+                <h3>Total Plans</h3>
+                <div class="card-value" id="totalPlans">0</div>
+            </div>
+            <div class="card">
+                <h3>Active Plans</h3>
+                <div class="card-value" id="activePlans">0</div>
+            </div>
+            <div class="card">
+                <h3>Featured Plans</h3>
+                <div class="card-value" id="featuredPlans">0</div>
+            </div>
+        </div>
+
+        <!-- Plans Table -->
+        <div class="card">
+            <div class="table-filters">
+                <input type="text" placeholder="Search plans..." onkeyup="filterPlans()">
+                <select onchange="filterPlanType()">
+                    <option value="all">All Types</option>
+                    <option value="residential">Residential</option>
+                    <option value="commercial">Commercial</option>
+                    <option value="industrial">Industrial</option>
+                </select>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Plan Name</th>
+                        <th>Type</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="plansTableBody">
+                    <!-- Plans will be populated here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add Plan Modal -->
+        <div id="addPlanModal" class="modal">
+            <div class="modal-content">
+                <h3>Add New Plan</h3>
+                <form id="addPlanForm" onsubmit="handleAddPlan(event)">
+                    <div class="form-group">
+                        <label>Plan Name</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select name="type" required>
+                            <option value="residential">Residential</option>
+                            <option value="commercial">Commercial</option>
+                            <option value="industrial">Industrial</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Price</label>
+                        <input type="number" name="price" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea name="description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Upload Images</label>
+                        <input type="file" name="images" multiple accept="image/*">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Plan</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeAddPlanModal()">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/plans.js"></script>
+</body>
+</html>

@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get Plan</title>
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="plan.css"> <!-- Custom CSS for the Plan page -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="/js/plans.js" defer></script>
+  <style>
+    /* Full-page background image */
+    body {
+      background: url('images/contact-bg.jpg') no-repeat center center/cover;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Arial', sans-serif;
+      color: white;
+      padding-top: 80px; /* Space for fixed navbar */
+    }
+
+    .main-content {
+      flex: 1;
+      overflow-y: auto; /* Makes content scrollable */
+      padding: 20px;
+      margin-top: 60px; /* Additional space after navbar */
+      margin-bottom: 40px;
+    }
+
+    /* Form container with background transparency */
+    .form-container {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+      max-width: 600px;
+      margin: 60px auto;
+    }
+
+    /* Button hover effect */
+    button:hover, .cta-button:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    /* Slide-down animation for form */
+    #newPlanForm {
+      animation: slideDown 0.3s ease-in-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Make the footer stick to the bottom */
+    footer {
+      margin-top: auto;
+      background-color: #1f2937;
+    }
+
+    /* Align navbar logo and links */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background-color: #1f2937;
+    }
+
+    .navbar img {
+      height: 40px;
+    }
+
+    /* Navbar links hover effect */
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #f97316;
+    }
+
+    /* Form styles */
+    #newPlanForm {
+      background-color: #f3f4f6;
+      padding: 2rem;
+      border-radius: 8px;
+    }
+
+    #newPlanForm h3 {
+      color: #1f2937;
+      margin-bottom: 1.5rem;
+    }
+
+    #newPlanForm label {
+      color: #4b5563;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    #newPlanForm input[type="number"],
+    #newPlanForm input[type="text"],
+    #newPlanForm select,
+    #newPlanForm textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 1rem;
+      color: #1f2937;
+    }
+
+    #newPlanForm input[type="checkbox"] {
+      margin-right: 0.5rem;
+    }
+
+    #newPlanForm .checkbox-label {
+      display: flex;
+      align-items: center;
+      color: #4b5563;
+      margin-bottom: 0.5rem;
+    }
+
+    #newPlanForm button[type="submit"] {
+      background-color: #10b981;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #newPlanForm button[type="submit"]:hover {
+      background-color: #059669;
+    }
+
+    #imageDialog {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    #imageDialog.hidden {
+      display: none;
+    }
+
+    #imageDialog .bg-white {
+      max-width: 90%;
+      max-height: 90vh;
+      overflow: auto;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    #imageDialog img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    #imageDialog button {
+      display: block;
+      margin: 20px auto 0;
+      padding: 10px 20px;
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #imageDialog button:hover {
+      background-color: #dc2626;
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background: #1f2937;
+      padding: 1rem 0;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 30px;
+    }
+
+    .logo {
+      flex: 0 0 auto;
+    }
+
+    .logo img {
+      height: 50px;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+      margin-left: auto;
+      gap: 20px;
+    }
+
+    .nav-button {
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .nav-button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #10b981 !important; /* Green color on hover */
+      transform: translateY(-2px);
+    }
+
+    .admin-button-container {
+      margin-left: 20px;
+    }
+
+    .admin-link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 16px;
+      background: #10b981;
+      color: white !important;
+      border-radius: 5px;
+      transition: all 0.3s ease !important;
+      font-weight: 500;
+    }
+
+    .admin-link:hover {
+      background: #059669;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Footer Styles */
+    .footer {
+      background: #1f2937;
+      color: white;
+      padding: 50px 0 20px;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .footer-section h3 {
+      color: #10b981;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+    }
+
+    .footer-section p {
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-section ul li {
+      margin: 10px 0;
+    }
+
+    .footer-section ul li a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-section ul li a:hover {
+      color: #10b981;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-links a {
+      color: white;
+      font-size: 1.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+      color: #10b981;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .navbar .container {
+        padding: 0 15px;
+      }
+
+      .nav-links {
+        gap: 10px;
+      }
+
+      .nav-button {
+        padding: 6px 12px;
+      }
+
+      .admin-button-container {
+        margin-left: 10px;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .footer-section p {
+        justify-content: center;
+      }
+
+      .social-links {
+        justify-content: center;
+      }
+    }
+
+    /* Container for plans */
+    .plans-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Ensure proper spacing */
+    .section-title {
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    /* Make the content area scrollable */
+    .scrollable-content {
+      max-height: calc(100vh - 200px); /* Adjust based on your navbar and footer height */
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    /* Smooth scrolling */
+    .scrollable-content {
+      scroll-behavior: smooth;
+    }
+
+    /* Scrollbar styling */
+    .scrollable-content::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .scrollable-content::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    .scrollable-content::-webkit-scrollbar-thumb {
+      background: #10b981;
+      border-radius: 4px;
+    }
+
+    .scrollable-content::-webkit-scrollbar-thumb:hover {
+      background: #059669;
+    }
+
+    /* Body and main container styles */
+    body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                    url('images/contact-bg.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    /* Main content container */
+    .main-content {
+        flex: 1;
+        padding: 120px 20px 40px; /* Increased top padding to account for navbar */
+        min-height: calc(100vh - 200px); /* Adjust based on your footer height */
+    }
+
+    /* Plans container styling */
+    .plans-container {
+        background: rgba(255, 255, 255, 0.95);
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Section title styling */
+    .section-title {
+        color: #1f2937;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2rem;
+    }
+
+    /* Plans grid layout */
+    .plans-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        padding: 20px;
+    }
+
+    /* Individual plan card styling */
+    .plan-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .plan-card:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Ensure navbar stays on top */
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+    }
+
+    /* Footer positioning */
+    .footer {
+        margin-top: auto;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .main-content {
+            padding: 100px 15px 30px;
+        }
+
+        .plans-container {
+            padding: 20px;
+        }
+
+        .plans-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Main content container adjustments */
+    body {
+        padding-top: 80px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                    url('images/contact-bg.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    .main-content {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        margin: 60px auto;
+    }
+
+    /* Form container */
+    .form-container {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Button styling */
+    .option-button {
+        display: inline-block;
+        padding: 12px 30px;
+        margin: 10px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .new-button {
+        background-color: #10b981;
+        color: white;
+    }
+
+    .existing-button {
+        background-color: #3b82f6;
+        color: white;
+    }
+
+    .option-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Form styles */
+    #newPlanForm {
+        display: none;
+        animation: slideDown 0.3s ease-in-out;
+        background: #f3f4f6;
+        padding: 30px;
+        border-radius: 8px;
+        margin-top: 20px;
+        text-align: left;
+    }
+
+    @keyframes slideDown {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #4b5563;
+        font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 4px;
+        font-size: 1rem;
+        color: #1f2937;
+    }
+
+    .checkbox-group {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        color: #4b5563;
+    }
+
+    .checkbox-label input {
+        margin-right: 8px;
+    }
+
+    .submit-btn {
+        background-color: #10b981;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        background-color: #059669;
+    }
+
+    /* Add this modal structure after your form section */
+    #imageModal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .close-btn {
+      font-size: 1.5rem;
+      font-weight: 600;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    .image-container img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .modal-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+    }
+
+    .control-btn {
+      font-size: 1.2rem;
+      font-weight: 600;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    /* Modal and control styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 15px;
+      position: relative;
+      width: 90%;
+      max-width: 1200px;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .modal-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-controls {
+      position: fixed;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      background: rgba(31, 41, 55, 0.9);
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .control-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .image-container {
+      position: relative;
+      width: 100%;
+      height: calc(100% - 60px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    #zoomedImage {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">
+        <img src="images/logo.png" alt="DREAM Construction">
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-button">Home</a></li>
+        <li><a href="index.html#about" class="nav-button">About</a></li>
+        <li><a href="index.html#services" class="nav-button">Services</a></li>
+        <li><a href="index.html#projects" class="nav-button">Projects</a></li>
+        <li><a href="index.html#contact" class="nav-button">Contact</a></li>
+        <li class="admin-button-container">
+          <a href="admin/admin-login.html" class="admin-link">
+            <i class="fas fa-user-shield"></i> Admin
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="form-container">
+        <h2 style="color: #1f2937; font-size: 2rem; margin-bottom: 30px;">Choose Your Plan Option</h2>
+        
+        <div>
+            <button class="option-button existing-button" onclick="window.location.href='existing.html'">
+                See Existing Plans
+            </button>
+            <button class="option-button new-button" onclick="toggleForm()">
+                Choose New Plan
+            </button>
+        </div>
+
+        <!-- New Plan Form -->
+        <form id="newPlanForm" onsubmit="handleFormSubmit(event)">
+            <h3 style="color: #1f2937; font-size: 1.5rem; margin-bottom: 20px;">Enter Your Requirements</h3>
+            
+            <!-- Plot Dimensions -->
+            <div class="form-group grid grid-cols-2 gap-4">
+                <div>
+                    <label for="plot-length">Plot Length (ft)</label>
+                    <input type="number" id="plot-length" name="plotLength" required>
+                </div>
+                <div>
+                    <label for="plot-width">Plot Width (ft)</label>
+                    <input type="number" id="plot-width" name="plotWidth" required>
+                </div>
+            </div>
+
+            <!-- Number of Floors -->
+            <div class="form-group">
+                <label for="floors">Number of Floors</label>
+                <input type="number" id="floors" min="1" required>
+            </div>
+
+            <!-- Number of Bedrooms -->
+            <div class="form-group">
+                <label for="bedrooms">Number of Bedrooms</label>
+                <input type="number" id="bedrooms" min="1" required>
+            </div>
+
+            <!-- Number of Washrooms -->
+            <div class="form-group">
+                <label for="washrooms">Number of Washrooms</label>
+                <input type="number" id="washrooms" min="1" required>
+            </div>
+
+            <!-- Additional Rooms -->
+            <div class="form-group">
+                <label>Additional Rooms</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="additional-rooms" value="living-room">
+                        Living Room
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="additional-rooms" value="dining-room">
+                        Dining Room
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="additional-rooms" value="kitchen">
+                        Kitchen
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="additional-rooms" value="study-room">
+                        Study Room
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="additional-rooms" value="puja-room">
+                        Puja Room
+                    </label>
+                </div>
+            </div>
+
+            <!-- Parking Requirements -->
+            <div class="form-group">
+                <label for="parking">Parking Requirements</label>
+                <select id="parking">
+                    <option value="none">No parking required</option>
+                    <option value="1-car">1 Car Parking</option>
+                    <option value="2-car">2 Car Parking</option>
+                    <option value="more">More than 2 Car Parking</option>
+                </select>
+            </div>
+
+            <!-- Additional Requirements -->
+            <div class="form-group">
+                <label for="requirements">Additional Requirements</label>
+                <textarea id="requirements" rows="4" placeholder="Enter any additional requirements here..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Search Plans</button>
+        </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <p><i class="fas fa-phone"></i> +1234567890</p>
+          <p><i class="fas fa-envelope"></i> info@dreamconstruction.com</p>
+          <p><i class="fas fa-map-marker-alt"></i> 123 Construction Street, City, Country</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="index.html#services">Services</a></li>
+            <li><a href="index.html#projects">Projects</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Follow Us</h3>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 DREAM Construction. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Add these script tags just before </body> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+  <script src="/js/user-session.js"></script>
+  <script src="/js/plans.js" defer></script>
+
+  <!-- Image Dialog -->
+  <div id="imageDialog" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+    <div class="bg-white p-4 rounded-lg">
+      <img id="planImage" src="" alt="Plan Image" class="w-full h-auto">
+      <button onclick="closeDialog()" class="mt-4 bg-red-500 text-white px-4 py-2 rounded">Close</button>
+    </div>
+  </div>
+
+  <!-- Add this before </body> -->
+  <div id="imageModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Plan Details</h3>
+        <button class="close-btn" onclick="closeModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="image-container">
+        <img id="zoomedImage" src="" alt="Zoomed Plan" />
+      </div>
+
+      <div class="modal-controls">
+        <button class="control-btn" onclick="zoomIn()" title="Zoom In">
+          <i class="fas fa-search-plus"></i>
+        </button>
+        <button class="control-btn" onclick="zoomOut()" title="Zoom Out">
+          <i class="fas fa-search-minus"></i>
+        </button>
+        <button class="control-btn" onclick="resetZoom()" title="Reset Zoom">
+          <i class="fas fa-compress-arrows-alt"></i>
+        </button>
+        <button class="control-btn" onclick="downloadImage()" title="Download">
+          <i class="fas fa-download"></i>
+        </button>
+        <button class="control-btn" onclick="window.location.href='3D-View.html';" title="View in 3D">
+          <i class="fas fa-cube"></i>
+        </button>
+        <button class="control-btn" onclick="rotateImage()" title="Rotate">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Define toggleForm if it's supposed to show/hide the form -->
+  <script>
+    function toggleForm() {
+        var form = document.getElementById('newPlanForm');
+        if (form.style.display === 'none' || form.style.display === '') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - DREAM Construction</title>
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img src="../images/logo.png" alt="Logo">
+            <span>Admin Panel</span>
+        </div>
+        <div class="sidebar-menu">
+            <a href="dashboard.html" class="menu-item active">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="users.html" class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+            </a>
+            <a href="plans.html" class="menu-item">
+                <i class="fas fa-drafting-compass"></i>
+                <span>Plans</span>
+            </a>
+            <a href="projects.html" class="menu-item">
+                <i class="fas fa-hard-hat"></i>
+                <span>Projects</span>
+            </a>
+            <a href="messages.html" class="menu-item">
+                <i class="fas fa-comments"></i>
+                <span>Messages</span>
+            </a>
+            <a href="settings.html" class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <a href="#" class="menu-item" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <h2>Dashboard Overview</h2>
+            <div class="user-info">
+                <span>Welcome, Admin</span>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="dashboard-cards">
+            <div class="card">
+                <h3>Total Users</h3>
+                <div class="card-value" id="totalUsers">0</div>
+            </div>
+            <div class="card">
+                <h3>Active Plans</h3>
+                <div class="card-value" id="activePlans">0</div>
+            </div>
+            <div class="card">
+                <h3>Total Projects</h3>
+                <div class="card-value" id="totalProjects">0</div>
+            </div>
+            <div class="card">
+                <h3>New Messages</h3>
+                <div class="card-value" id="newMessages">0</div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card">
+            <h3>Recent Activity</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>User</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="activityLog">
+                    <!-- Activity logs will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

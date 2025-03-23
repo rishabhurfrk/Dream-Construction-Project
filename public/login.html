@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"> <!-- Link to your custom CSS file -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="js/main.js"></script>
+  <style>
+    /* Main container and body styles */
+    body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                    url('images/contact-bg.jpg') no-repeat center center fixed;
+        background-size: cover;
+        font-family: 'Arial', sans-serif;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Main content container */
+    .main-content {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 100px 20px 50px 20px; /* Top padding accounts for navbar */
+    }
+
+    /* Form container styles */
+    .form-container {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto; /* Center horizontally */
+    }
+
+    /* Update the auth-section if you're using it */
+    .auth-section {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 100px 20px 50px 20px;
+        width: 100%;
+    }
+
+    /* Make footer stay at bottom */
+    .footer {
+        margin-top: auto;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .form-container {
+            margin: 20px;
+        }
+    }
+
+    /* Navbar styling */
+    .navbar {
+      background-color: #1f2937;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #10b981;
+    }
+
+    /* Custom styles for toggle buttons */
+    .toggle-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .role-btn {
+      padding: 10px 20px;
+      margin: 0 5px;
+      border: 2px solid #333;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .role-btn.active {
+      background: #333;
+      color: white;
+    }
+
+    /* Footer styling */
+    footer {
+      margin-top: auto;
+      background-color: #1f2937;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    footer a:hover {
+      color: #10b981;
+    }
+
+    .popup-message {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 5px;
+        color: white;
+        z-index: 1000;
+        animation: slideIn 0.5s ease-out;
+    }
+
+    .success {
+        background-color: #10b981;
+    }
+
+    .error {
+        background-color: #ef4444;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    /* Add loading state styles */
+    .login-btn {
+        position: relative;
+    }
+
+    .login-btn.loading {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    .login-btn.loading:after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: 50%;
+        left: 50%;
+        margin: -10px 0 0 -10px;
+        border: 2px solid #fff;
+        border-top-color: transparent;
+    }
+
+    /* Navbar Styles */
+    .navbar {
+        background: #1f2937;
+        padding: 1rem 0;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 30px;
+    }
+
+    .logo {
+        flex: 0 0 auto;
+    }
+
+    .logo img {
+        height: 50px;
+    }
+
+    .nav-links {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+        margin-left: auto;
+        gap: 20px;
+    }
+
+    .nav-button {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .nav-button:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #10b981;
+        transform: translateY(-2px);
+    }
+
+    .admin-button-container {
+        margin-left: 20px;
+    }
+
+    .admin-link {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 16px;
+        background: #10b981;
+        color: white !important;
+        border-radius: 5px;
+        transition: all 0.3s ease !important;
+        font-weight: 500;
+    }
+
+    .admin-link:hover {
+        background: #059669;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        .navbar .container {
+            padding: 0 15px;
+        }
+
+        .nav-links {
+            gap: 10px;
+        }
+
+        .nav-button {
+            padding: 6px 12px;
+        }
+
+        .admin-button-container {
+            margin-left: 10px;
+        }
+    }
+
+    /* Footer Styles */
+    .footer {
+        background: #1f2937;
+        color: white;
+        padding: 50px 0 20px;
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .footer-section h3 {
+        color: #10b981;
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+    }
+
+    .footer-section p {
+        margin: 10px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .footer-section ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .footer-section ul li {
+        margin: 10px 0;
+    }
+
+    .footer-section ul li a {
+        color: white;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .footer-section ul li a:hover {
+        color: #10b981;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 15px;
+    }
+
+    .social-links a {
+        color: white;
+        font-size: 1.5rem;
+        transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+        color: #10b981;
+    }
+
+    .footer-bottom {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Add responsive styles */
+    @media (max-width: 768px) {
+        .footer-content {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .footer-section p {
+            justify-content: center;
+        }
+
+        .social-links {
+            justify-content: center;
+        }
+    }
+
+    /* Update the main content spacing */
+    .auth-section {
+        padding-top: 100px; /* Add padding to account for fixed navbar */
+        padding-bottom: 50px;
+        min-height: calc(100vh - 150px); /* Adjust for navbar and footer */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form-container {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 400px;
+        margin: 20px;
+    }
+
+    /* Ensure the body has proper spacing */
+    body {
+        padding-top: 60px; /* Add padding to body to account for fixed navbar */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Make footer stay at bottom */
+    .footer {
+        margin-top: auto;
+    }
+
+    /* Alert/Notification Styles */
+    .alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateX(150%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+        max-width: 350px;
+    }
+
+    .alert.show {
+        transform: translateX(0);
+    }
+
+    .alert-success {
+        background: #10b981;
+        color: white;
+        border-left: 4px solid #059669;
+    }
+
+    .alert-error {
+        background: #ef4444;
+        color: white;
+        border-left: 4px solid #dc2626;
+    }
+
+    .alert-warning {
+        background: #f59e0b;
+        color: white;
+        border-left: 4px solid #d97706;
+    }
+
+    .alert-icon {
+        font-size: 1.2rem;
+    }
+
+    .alert-message {
+        flex: 1;
+        font-size: 0.95rem;
+    }
+
+    .alert-close {
+        cursor: pointer;
+        padding: 5px;
+        background: none;
+        border: none;
+        color: white;
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+    }
+
+    .alert-close:hover {
+        opacity: 1;
+    }
+
+    /* Loading animation */
+    .loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s ease-in-out infinite;
+        margin-right: 10px;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* Input validation styles */
+    .form-group {
+        position: relative;
+    }
+
+    .input-error {
+        border-color: #ef4444 !important;
+    }
+
+    .error-message {
+        color: #d9534f; /* Bootstrap danger color */
+        background-color: #f2dede; /* Light red background */
+        border: 1px solid #ebccd1; /* Border color */
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+        display: none; /* Hidden by default */
+    }
+
+    /* Form button loading state */
+    .submit-btn.loading {
+        position: relative;
+        color: transparent;
+    }
+
+    .submit-btn.loading::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border: 2px solid white;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 1s linear infinite;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    /* styles.css */
+    .login-container {
+        max-width: 400px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+    }
+
+    .login-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff; /* Change to your preferred color */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #0056b3; /* Change to your preferred hover color */
+    }
+
+    .signup-link {
+        text-align: center;
+        margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar with logo and links -->
+  <nav class="navbar">
+    <div class="container">
+        <div class="logo">
+            <img src="images/logo.png" alt="DREAM Construction">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="nav-button">Home</a></li>
+            <li><a href="index.html#about" class="nav-button">About</a></li>
+            <li><a href="index.html#services" class="nav-button">Services</a></li>
+            <li><a href="index.html#projects" class="nav-button">Projects</a></li>
+            <li><a href="index.html#contact" class="nav-button">Contact</a></li>
+            <li class="admin-button-container">
+                <a href="admin/admin-login.html" class="admin-link">
+                    <i class="fas fa-user-shield"></i> Admin
+                </a>
+            </li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+  </nav>
+
+  <!-- Login Form Container -->
+  <div class="main-content">
+    <div class="form-container">
+        <h2 class="text-2xl font-bold text-center mb-4">Login</h2>
+        
+        <!-- Role Toggle -->
+        <div class="toggle-container">
+            <button class="role-btn active" onclick="switchRole('Customer')">Customer</button>
+            <button class="role-btn" onclick="switchRole('Architect')">Architect</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="space-y-4">
+            <input type="hidden" id="role" value="Customer"> <!-- Default role is Customer -->
+
+            <div class="form-group">
+                <input type="email" 
+                       id="email" 
+                       required 
+                       onblur="validateInput(this)"
+                       placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <input type="password" 
+                       id="password" 
+                       required 
+                       onblur="validateInput(this)"
+                       placeholder="Enter your password">
+            </div>
+
+            <button type="submit" class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition duration-300">Login</button>
+
+            <p class="text-center text-gray-600 mt-4">Don't have an account? <a href="signup.html" class="text-blue-500">Sign Up</a></p>
+            <p class="text-center text-gray-600"><a href="forgot-password.html" class="text-blue-500">Forgot Password?</a></p>
+        </form>
+
+        <!-- Add this right after your form -->
+        <div id="alertContainer"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-phone"></i> +1234567890</p>
+                <p><i class="fas fa-envelope"></i> info@dreamconstruction.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Construction Street, City, Country</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="index.html#projects">Projects</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 DREAM Construction. All rights reserved.</p>
+        </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript for toggle functionality and session handling -->
+  <script>
+    // Role Toggle Function
+    function switchRole(role) {
+      const buttons = document.querySelectorAll('.role-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      document.getElementById('role').value = role; // Set the role value in the hidden input
+      event.target.classList.add('active');
+    }
+
+    // Session Handling for Login
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const role = document.getElementById('role').value;
+
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, role })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          // Store session information in localStorage
+          localStorage.setItem('userLoggedIn', 'true');
+          localStorage.setItem('userData', JSON.stringify({
+            email: result.data.email,
+            name: result.data.name || result.data.email,
+            role: result.data.role
+          }));
+
+          // Redirect to Get Plans page
+          window.location.href = '/getplans.html';
+        } else {
+          alert(result.message || 'Login failed. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error during login:', error);
+        alert('An error occurred. Please try again.');
+      }
+    });
+
+    function showAlert(message, type = 'success') {
+        const alertContainer = document.getElementById('alertContainer');
+        const alertId = 'alert-' + Date.now();
+        
+        const alertHTML = `
+            <div class="alert alert-${type}" id="${alertId}">
+                <span class="alert-icon">
+                    ${type === 'success' ? '<i class="fas fa-check-circle"></i>' :
+                      type === 'error' ? '<i class="fas fa-exclamation-circle"></i>' :
+                      '<i class="fas fa-exclamation-triangle"></i>'}
+                </span>
+                <span class="alert-message">${message}</span>
+                <button class="alert-close" onclick="closeAlert('${alertId}')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+        
+        alertContainer.insertAdjacentHTML('beforeend', alertHTML);
+        
+        // Show the alert
+        setTimeout(() => {
+            document.getElementById(alertId).classList.add('show');
+        }, 100);
+
+        // Auto close after 5 seconds
+        setTimeout(() => {
+            closeAlert(alertId);
+        }, 5000);
+    }
+
+    function closeAlert(alertId) {
+        const alert = document.getElementById(alertId);
+        if (alert) {
+            alert.classList.remove('show');
+            setTimeout(() => {
+                alert.remove();
+            }, 300);
+        }
+    }
+
+    // Example usage in your form submission
+    document.querySelector('form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        
+        try {
+            // Add loading state
+            submitBtn.classList.add('loading');
+            
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Show success message
+            showAlert('Successfully logged in!', 'success');
+            
+            // Redirect after successful login
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+            
+        } catch (error) {
+            // Show error message
+            showAlert('Invalid credentials. Please try again.', 'error');
+        } finally {
+            // Remove loading state
+            submitBtn.classList.remove('loading');
+        }
+    });
+
+    // Input validation example
+    function validateInput(input) {
+        const value = input.value.trim();
+        const errorMessage = input.nextElementSibling;
+        
+        if (input.type === 'email') {
+            const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+            if (!isValid) {
+                input.classList.add('input-error');
+                showInputError(input, 'Please enter a valid email address');
+            } else {
+                input.classList.remove('input-error');
+                hideInputError(input);
+            }
+        }
+        
+        if (input.type === 'password') {
+            if (value.length < 6) {
+                input.classList.add('input-error');
+                showInputError(input, 'Password must be at least 6 characters');
+            } else {
+                input.classList.remove('input-error');
+                hideInputError(input);
+            }
+        }
+    }
+
+    function showInputError(input, message) {
+        const errorDiv = input.parentElement.querySelector('.error-message') || 
+                        document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i>${message}`;
+        
+        if (!input.parentElement.querySelector('.error-message')) {
+            input.parentElement.appendChild(errorDiv);
+        }
+    }
+
+    function hideInputError(input) {
+        const errorDiv = input.parentElement.querySelector('.error-message');
+        if (errorDiv) {
+            errorDiv.remove();
+        }
+    }
+  </script>
+</body>
+</html>

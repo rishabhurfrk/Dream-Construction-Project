@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Admin Dashboard</title>
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar (same as dashboard) -->
+    <div class="sidebar">
+        <!-- Same sidebar content as dashboard.html -->
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <h2>User Management</h2>
+            <button class="btn btn-primary" onclick="openAddUserModal()">
+                <i class="fas fa-plus"></i> Add New User
+            </button>
+        </div>
+
+        <!-- User Stats -->
+        <div class="dashboard-cards">
+            <div class="card">
+                <h3>Total Users</h3>
+                <div class="card-value" id="totalUsersCount">0</div>
+            </div>
+            <div class="card">
+                <h3>Active Users</h3>
+                <div class="card-value" id="activeUsersCount">0</div>
+            </div>
+            <div class="card">
+                <h3>New Users (This Month)</h3>
+                <div class="card-value" id="newUsersCount">0</div>
+            </div>
+        </div>
+
+        <!-- Users Table -->
+        <div class="card">
+            <div class="table-filters">
+                <input type="text" placeholder="Search users..." onkeyup="filterUsers()">
+                <select onchange="filterUserRole()">
+                    <option value="all">All Roles</option>
+                    <option value="customer">Customers</option>
+                    <option value="architect">Architects</option>
+                    <option value="admin">Admins</option>
+                </select>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <!-- Users will be populated here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add User Modal -->
+        <div id="addUserModal" class="modal">
+            <div class="modal-content">
+                <h3>Add New User</h3>
+                <form id="addUserForm" onsubmit="handleAddUser(event)">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select name="role" required>
+                            <option value="customer">Customer</option>
+                            <option value="architect">Architect</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add User</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeAddUserModal()">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/users.js"></script>
+</body>
+</html>
